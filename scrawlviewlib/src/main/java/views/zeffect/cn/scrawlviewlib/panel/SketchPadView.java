@@ -373,7 +373,7 @@ public class SketchPadView extends ImageView {
     /**
      * 代表一条线
      */
-    public class Line {
+    private class Line {
         /**
          * 点的集合
          */
@@ -391,6 +391,38 @@ public class SketchPadView extends ImageView {
          * 0笔1橡皮
          */
         private int type;
+
+        public ArrayList<ViewPoint> getPoints() {
+            return mPoints;
+        }
+
+        public void setPoints(ArrayList<ViewPoint> pPoints) {
+            mPoints = pPoints;
+        }
+
+        public int getColor() {
+            return color;
+        }
+
+        public void setColor(int pColor) {
+            color = pColor;
+        }
+
+        public int getWidth() {
+            return width;
+        }
+
+        public void setWidth(int pWidth) {
+            width = pWidth;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int pType) {
+            type = pType;
+        }
     }
 
     /**
@@ -405,5 +437,21 @@ public class SketchPadView extends ImageView {
          * Y坐标
          */
         private float y;
+
+        public float getX() {
+            return x;
+        }
+
+        public void setX(float pX) {
+            x = pX;
+        }
+
+        public float getY() {
+            return y;
+        }
+
+        public void setY(float pY) {
+            y = pY;
+        }
     }
 }
