@@ -54,5 +54,12 @@ public class MainActivity extends AppCompatActivity {
                 mSketchPadView.drawText(new Random().nextInt(10), new Random().nextInt(1280), new Random().nextInt(800), "不爱写字");
             }
         });
+        Button tempButton5 = (Button) findViewById(R.id.screenshot);
+        tempButton5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSketchPadView.getScreenShot();
+            }
+        });
     }
 }

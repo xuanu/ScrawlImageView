@@ -256,6 +256,19 @@ public class SketchPadView extends ImageView {
         m_bitmapPaint.setTextSize(pTextSize);
     }
 
+    /***
+     * 返回当前控件截图，大小为控件大小
+     *
+     * @return bitmap
+     */
+    public Bitmap getScreenShot() {
+        Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        draw(canvas);
+        return bitmap;
+    }
+
 
     /**
      * 用来保存用户回答的问题，便于清除

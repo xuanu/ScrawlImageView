@@ -7,7 +7,8 @@
 - 记录画过的笔迹。  `List<Line> getLines();`    
 - 把笔迹绘制到图中  `drawLines(List<Line>);`    
 - 增加方法：把文字画到图中 `drawText(int index,float x,float y,String text)`  
-- 设置文字颜色和大小： `setTextSize(int),setTextColor(int)`，没有判断是否为色值  
+- 设置文字颜色和大小： `setTextSize(int),setTextColor(int)`，没有判断是否为色值    
+- 取当前控件截图： `Bitmap getScreenShot()`  
 效果：  
 ![image](https://github.com/xuanu/ScrawlImageView/raw/master/screenshots/device-2016-12-07-161347.png)
 
