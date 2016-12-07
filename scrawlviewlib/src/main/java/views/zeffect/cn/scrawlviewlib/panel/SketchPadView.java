@@ -239,6 +239,25 @@ public class SketchPadView extends ImageView {
     }
 
     /**
+     * 设置文字颜色，画图片上的。
+     *
+     * @param pColor 色值，没有对错是不是色值
+     */
+    public void setTextColor(int pColor) {
+        m_bitmapPaint.setColor(pColor);
+    }
+
+    /**
+     * 设置文字大小
+     *
+     * @param pTextSize 大小
+     */
+    public void setTextSize(int pTextSize) {
+        m_bitmapPaint.setTextSize(pTextSize);
+    }
+
+
+    /**
      * 用来保存用户回答的问题，便于清除
      */
     private HashMap<Integer, String> mSaveAnswer = new HashMap<>();
