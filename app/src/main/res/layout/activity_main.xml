@@ -8,38 +8,48 @@
     android:orientation="vertical"
     tools:context="views.zeffect.cn.scrawlimageview.MainActivity">
 
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/pen"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="笔"/>
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/eraser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="橡皮"/>
+            <Button
+                android:id="@+id/pen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="笔"/>
 
-        <Button
-            android:id="@+id/scale"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="重现笔迹"/>
-    </LinearLayout>
+            <Button
+                android:id="@+id/eraser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="橡皮"/>
+
+            <Button
+                android:id="@+id/scale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="重现笔迹"/>
+
+            <Button
+                android:id="@+id/random_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="随机写字"/>
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <views.zeffect.cn.scrawlviewlib.panel.SketchPadView
         android:id="@+id/scrawlview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="matrix"
+        android:scaleType="fitXY"
         />
 </LinearLayout>

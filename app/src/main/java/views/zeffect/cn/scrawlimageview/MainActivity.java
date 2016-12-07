@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import views.zeffect.cn.scrawlviewlib.panel.SketchPadView;
 
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mSketchPadView = (SketchPadView) findViewById(R.id.scrawlview);
+        mSketchPadView.setViewBackground(BitmapFactory.decodeResource(getResources(), R.drawable.e18ba16954e4e63b14ebbe68ada88543));
         Button tButton1 = (Button) findViewById(R.id.pen);
         Button tButton2 = (Button) findViewById(R.id.eraser);
         tButton1.setOnClickListener(new View.OnClickListener() {
@@ -45,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
                 tempLines.clear();
             }
         });
-        mSketchPadView.setViewBackground(BitmapFactory.decodeResource(getResources(), R.drawable.home_mascot));
+        Button tempButton4 = (Button) findViewById(R.id.random_text);
+        tempButton4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSketchPadView.drawText(new Random().nextInt(10), new Random().nextInt(1280), new Random().nextInt(800), "不爱写字");
+            }
+        });
     }
 }

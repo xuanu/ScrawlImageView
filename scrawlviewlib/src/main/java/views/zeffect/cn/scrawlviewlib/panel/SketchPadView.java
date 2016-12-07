@@ -8,11 +8,14 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -236,6 +239,60 @@ public class SketchPadView extends ImageView {
     }
 
     /**
+     * 用来保存用户回答的问题，便于清除
+     */
+    private HashMap<Integer, String> mSaveAnswer = new HashMap<>();
+
+    /**
+     * 在图上画文字
+     * <p>
+     * 可能存在问题。两个问题之间太近就会存在问题。
+     * 步骤：
+     * 1.检测上一次有无作答：有，擦掉。
+     * 2.画本次问题，text为空，画题号
+     *
+     * @param index 题号 从0开始默认+1
+     * @param x     X为图片中的X
+     * @param y     y为图片中的Y
+     * @param pText 作答文字
+     */
+    public void drawText(int index, float x, float y, String pText) {
+        x = toViewAxisX(x);
+        y = toViewAxisY(y);
+        int temp1Dp = 1;// DensityUtils.dp2px(getContext(), 1);//先用一个像素，看看会 产
+        //有无历史答案，有的话要擦掉
+        if (mSaveAnswer.containsKey(index)) {
+            SketchPadEraser tempEraser = new SketchPadEraser(m_eraserSize);
+            String tempText = mSaveAnswer.get(index);
+            double tempFontH1 = Math.ceil(m_bitmapPaint.getFontMetrics().descent - m_bitmapPaint.getFontMetrics().ascent);
+            float fontHeight = (float) tempFontH1;
+            float textWidth = m_bitmapPaint.measureText(tempText);
+            double left = x - textWidth / 2 - temp1Dp;
+            double top = y - fontHeight - temp1Dp;
+            double right = x + textWidth / 2 + temp1Dp;
+            double bottom = y + temp1Dp;
+            Rect tRectF = new Rect((int) Math.floor(left), (int) Math.floor(top), (int) Math.ceil(right), (int) Math.ceil(bottom));
+            tempEraser.drawRect(m_canvas, tRectF);
+            invalidate(tRectF);
+        }
+        //
+        if (pText.length() >= 3) {
+            pText = pText.substring(0, 3);
+        }
+        if (pText == null) {
+            pText = "";
+        }
+        String drawText = String.valueOf(index + 1) + "." + pText;
+        if (!TextUtils.isEmpty(drawText)) {//空白不画东西
+            float textWidth = m_bitmapPaint.measureText(drawText);
+            m_canvas.drawText(drawText, x - textWidth / 2, y, m_bitmapPaint);
+        }
+        //
+        mSaveAnswer.put(index, pText);
+        invalidate();
+    }
+
+    /**
      * 返回当前图的所有笔画
      *
      * @return 笔画
@@ -321,10 +378,18 @@ public class SketchPadView extends ImageView {
         m_eraserSize = 2 * m_penSize;
         m_canvas = new Canvas();
         m_bitmapPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        m_bitmapPaint.setColor(Color.BLUE);
+        m_bitmapPaint.setStyle(Paint.Style.FILL);
+        m_bitmapPaint.setTextSize(sp2px(14));
+        m_bitmapPaint.setStrokeWidth(1);
         setStrokeType(PenType.Pen);
         HALF_STROKE_WIDTH = m_penSize / 2;
         mPhotoSize.x = 1280;
         mPhotoSize.y = 800;
+    }
+
+    private int sp2px(float sp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, getContext().getResources().getDisplayMetrics());
     }
 
     protected void createStrokeBitmap(int w, int h) {
