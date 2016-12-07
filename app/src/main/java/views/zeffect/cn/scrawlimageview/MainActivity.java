@@ -1,5 +1,6 @@
 package views.zeffect.cn.scrawlimageview;
 
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -44,5 +45,6 @@ public class MainActivity extends AppCompatActivity {
                 tempLines.clear();
             }
         });
+        mSketchPadView.setViewBackground(BitmapFactory.decodeResource(getResources(), R.drawable.home_mascot));
     }
 }

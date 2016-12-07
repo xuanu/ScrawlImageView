@@ -134,6 +134,7 @@ public class SketchPadView extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
         if (null != m_foreBitmap) {
             canvas.drawBitmap(m_foreBitmap, 0, 0, m_bitmapPaint);
         }
