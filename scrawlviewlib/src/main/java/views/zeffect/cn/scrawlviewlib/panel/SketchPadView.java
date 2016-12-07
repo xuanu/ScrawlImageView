@@ -373,7 +373,7 @@ public class SketchPadView extends ImageView {
     /**
      * 代表一条线
      */
-    private class Line {
+    public class Line {
         /**
          * 点的集合
          */
@@ -428,7 +428,7 @@ public class SketchPadView extends ImageView {
     /**
      * 点
      */
-    private class ViewPoint {
+    public class ViewPoint {
         /**
          * X坐标
          */
