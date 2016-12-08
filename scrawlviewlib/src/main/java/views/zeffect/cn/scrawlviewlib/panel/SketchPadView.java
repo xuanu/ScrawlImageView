@@ -320,7 +320,7 @@ public class SketchPadView extends ImageView {
             m_canvas.drawText(drawText, x - textWidth / 2, y, m_bitmapPaint);
         }
         //
-        mSaveAnswer.put(index, pText);
+        mSaveAnswer.put(index, drawText);
         invalidate();
     }
 
