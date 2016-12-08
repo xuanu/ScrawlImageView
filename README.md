@@ -1,9 +1,7 @@
 # ScrawlImageView
 涂鸦控件，继承自ImageView
 > 同这个控件：[ScrawlView](https://github.com/xuanu/ScrawlView)   
-
-
-1. 在项目的要目录build.gradle中添加：  
+1. 在项目的要目录build.gradle中添加：    
 ```
 allprojects {
 		repositories {
@@ -12,7 +10,6 @@ allprojects {
 		}
 	}
 ```  
-
 2. 添加依赖:
 ```
 dependencies {
