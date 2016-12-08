@@ -11,5 +11,23 @@
 - 取当前控件截图： `Bitmap getScreenShot()`    
 - 设置drawText()显示文字个数： `void setDrawTextCount(int count)`  
 效果：  
-![image](https://github.com/xuanu/ScrawlImageView/raw/master/screenshots/device-2016-12-07-161347.png)
+![image](https://github.com/xuanu/ScrawlImageView/raw/master/screenshots/device-2016-12-07-161347.png)  
+
+1. 在项目的要目录build.gradle中添加：  
+```
+allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```  
+
+2. 添加依赖:
+```
+dependencies {
+	        compile 'com.github.xuanu:ScrawlImageView:0.0.9'
+	}
+```
+3. 
 
