@@ -20,9 +20,7 @@ dependencies {
 	        compile 'com.github.xuanu:ScrawlImageView:0.0.9'
 	}
 ```  
-   
-3.   
-   
+
 ***  
 
 1. **修改增加两个方法**。  
