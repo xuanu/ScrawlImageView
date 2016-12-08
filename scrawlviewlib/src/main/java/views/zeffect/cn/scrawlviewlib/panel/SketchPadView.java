@@ -1,6 +1,7 @@
 package views.zeffect.cn.scrawlviewlib.panel;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -291,7 +292,7 @@ public class SketchPadView extends ImageView {
     public void drawText(int index, float x, float y, String pText) {
         x = toViewAxisX(x);
         y = toViewAxisY(y);
-        int temp1Dp = 1;// DensityUtils.dp2px(getContext(), 1);//先用一个像素，看看会 产
+        float temp1Dp = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getContext().getResources().getDisplayMetrics());// DensityUtils.dp2px(getContext(), 1);//先用一个像素，看看会 产
         //有无历史答案，有的话要擦掉
         if (mSaveAnswer.containsKey(index)) {
             SketchPadEraser tempEraser = new SketchPadEraser(m_eraserSize);
