@@ -1,6 +1,7 @@
 package views.zeffect.cn.scrawlimageview;
 
 import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mSketchPadView = (SketchPadView) findViewById(R.id.scrawlview);
-        mSketchPadView.setViewBackground(BitmapFactory.decodeResource(getResources(), R.drawable.e18ba16954e4e63b14ebbe68ada88543));
+//        mSketchPadView.setViewBackground(BitmapFactory.decodeResource(getResources(), R.drawable.e18ba16954e4e63b14ebbe68ada88543));
         Button tButton1 = (Button) findViewById(R.id.pen);
         Button tButton2 = (Button) findViewById(R.id.eraser);
         tButton1.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +52,9 @@ public class MainActivity extends AppCompatActivity {
         tempButton4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSketchPadView.drawText(new Random().nextInt(10), new Random().nextInt(1280), new Random().nextInt(800), "不爱写字");
+                for (int i = 0; i < 10; i++) {
+                    mSketchPadView.drawText(i, i * 100, i * 100, "随机写字");
+                }
             }
         });
         Button tempButton5 = (Button) findViewById(R.id.screenshot);

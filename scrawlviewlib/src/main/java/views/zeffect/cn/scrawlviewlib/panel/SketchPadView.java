@@ -270,6 +270,22 @@ public class SketchPadView extends ImageView {
         return bitmap;
     }
 
+    /**
+     * 图上显示文字的个数
+     */
+    private int mDrawTextCount = 3;
+
+    /**
+     * 设置画文字的个数，最长有几个字会画上去
+     *
+     * @param pCount
+     */
+    public void setDrawTextCount(int pCount) {
+        if (pCount == 0) {
+            pCount = 3;
+        }
+        this.mDrawTextCount = pCount;
+    }
 
     /**
      * 用来保存用户回答的问题，便于清除
@@ -292,25 +308,23 @@ public class SketchPadView extends ImageView {
     public void drawText(int index, float x, float y, String pText) {
         x = toViewAxisX(x);
         y = toViewAxisY(y);
-        float temp1Dp = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getContext().getResources().getDisplayMetrics());// DensityUtils.dp2px(getContext(), 1);//先用一个像素，看看会 产
+        float temp1Dp = 1;
         //有无历史答案，有的话要擦掉
         if (mSaveAnswer.containsKey(index)) {
             SketchPadEraser tempEraser = new SketchPadEraser(m_eraserSize);
             String tempText = mSaveAnswer.get(index);
-            double tempFontH1 = Math.ceil(m_bitmapPaint.getFontMetrics().descent - m_bitmapPaint.getFontMetrics().ascent);
-            float fontHeight = (float) tempFontH1;
             float textWidth = m_bitmapPaint.measureText(tempText);
             double left = x - textWidth / 2 - temp1Dp;
-            double top = y - fontHeight - temp1Dp;
+            double top = y + m_bitmapPaint.getFontMetrics().top - temp1Dp;
             double right = x + textWidth / 2 + temp1Dp;
-            double bottom = y + temp1Dp;
+            double bottom = y + temp1Dp + m_bitmapPaint.getFontMetrics().bottom;
             Rect tRectF = new Rect((int) Math.floor(left), (int) Math.floor(top), (int) Math.ceil(right), (int) Math.ceil(bottom));
             tempEraser.drawRect(m_canvas, tRectF);
             invalidate(tRectF);
         }
         //
-        if (pText.length() >= 3) {
-            pText = pText.substring(0, 3);
+        if (pText.length() >= mDrawTextCount) {
+            pText = pText.substring(0, mDrawTextCount);
         }
         if (pText == null) {
             pText = "";
@@ -324,6 +338,7 @@ public class SketchPadView extends ImageView {
         mSaveAnswer.put(index, drawText);
         invalidate();
     }
+
 
     /**
      * 返回当前图的所有笔画
