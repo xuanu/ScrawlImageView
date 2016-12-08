@@ -17,7 +17,7 @@ allprojects {
    
 ```
 dependencies {
-	        compile 'com.github.xuanu:ScrawlImageView:0.0.9'
+	        compile 'com.github.xuanu:ScrawlImageView:1.0.0'
 	}
 ```  
 
@@ -26,11 +26,13 @@ dependencies {
 1. **修改增加两个方法**。  
 - 设置背景图一定要使用  **setViewBackground(Bitmap);**,不然得不到图片的大小不好处理画线位置。    
 - 记录画过的笔迹。  `List<Line> getLines();`    
-- 把笔迹绘制到图中  `drawLines(List<Line>);`    
+- 把笔迹绘制到图中  `drawLines(List<Line>);`  Line.type:0代表笔1代表橡皮    
 - 增加方法：把文字画到图中 `drawText(int index,float x,float y,String text)`  
 - 设置文字颜色和大小： `setTextSize(int),setTextColor(int)`，没有判断是否为色值    
 - 取当前控件截图： `Bitmap getScreenShot()`    
-- 设置drawText()显示文字个数： `void setDrawTextCount(int count)`  
+- 设置drawText()显示文字个数： `void setDrawTextCount(int count)`    
+- 设置画笔颜色 `void setPenColor(int pColor)`和画笔大小` void setPenSize(int size) `    
+- 设置橡皮擦大小： `void setEraserSize(int pSize)`  
 效果：  
 ![image](https://github.com/xuanu/ScrawlImageView/raw/master/screenshots/device-2016-12-07-161347.png)  
 

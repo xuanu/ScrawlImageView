@@ -31,7 +31,7 @@ public class SketchPadView extends ImageView {
      * Need to track this so the dirty region can accommodate the stroke.
      **/
     private float HALF_STROKE_WIDTH = 0;
-    private int m_strokeColor = Color.BLACK;
+    private int m_strokeColor = Color.BLUE;
     private int m_penSize;
     private int m_eraserSize;
     private PenType mPenType = PenType.Pen;
@@ -176,6 +176,11 @@ public class SketchPadView extends ImageView {
     }
 
     /**
+     * 线的格式0代表笔1代表橡皮
+     */
+    public static final int LINE_TYPE_PEN_0 = 0, LINE_TYPE_ERASER_1 = 1;
+
+    /**
      * 画线，根椐所有的线
      *
      * @param pLines
@@ -186,7 +191,7 @@ public class SketchPadView extends ImageView {
         }
         for (Line pLine : pLines) {
             ISketchPadTool tempTool;
-            if (pLine.type == 0) {
+            if (pLine.type == LINE_TYPE_PEN_0) {
                 int penSize = m_penSize;
                 if (pLine.width != 0) {
                     penSize = pLine.width;
@@ -196,7 +201,7 @@ public class SketchPadView extends ImageView {
                     penColor = pLine.color;
                 }
                 tempTool = new SketchPadPen(penSize, penColor);
-            } else if (pLine.type == 1) {
+            } else if (pLine.type == LINE_TYPE_ERASER_1) {
                 int penSize = m_eraserSize;
                 if (pLine.width != 0) {
                     penSize = pLine.width;
@@ -435,6 +440,43 @@ public class SketchPadView extends ImageView {
         mPhotoSize.x = 1280;
         mPhotoSize.y = 800;
     }
+
+    /**
+     * 设置画笔颜色
+     *
+     * @param pColor 色值
+     */
+    public void setPenColor(int pColor) {
+        this.m_strokeColor = pColor;
+        if (mPenType == PenType.Pen) {
+            m_curTool = new SketchPadPen(m_penSize, m_strokeColor);
+        }
+    }
+
+    /**
+     * 设置画笔大小
+     *
+     * @param size 大小
+     */
+    public void setPenSize(int size) {
+        this.m_penSize = size;
+        if (mPenType == PenType.Pen) {
+            m_curTool = new SketchPadPen(m_penSize, m_strokeColor);
+        }
+    }
+
+    /**
+     * 设置橡皮大小
+     *
+     * @param pSize
+     */
+    public void setEraserSize(int pSize) {
+        this.m_eraserSize = pSize;
+        if (mPenType == PenType.Eraser) {
+            m_curTool = new SketchPadEraser(m_eraserSize);
+        }
+    }
+
 
     private int sp2px(float sp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, getContext().getResources().getDisplayMetrics());
