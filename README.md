@@ -1,7 +1,9 @@
 # ScrawlImageView
 涂鸦控件，继承自ImageView
 > 同这个控件：[ScrawlView](https://github.com/xuanu/ScrawlView)   
+  
 1. 在项目的要目录build.gradle中添加：    
+  
 ```
 allprojects {
 		repositories {
@@ -9,14 +11,18 @@ allprojects {
 			maven { url 'https://jitpack.io' }
 		}
 	}
-```  
-2. 添加依赖:
+```    
+
+2. 添加依赖:  
+   
 ```
 dependencies {
 	        compile 'com.github.xuanu:ScrawlImageView:0.0.9'
 	}
-```
+```  
+   
 3.   
+   
 ***  
 
 1. **修改增加两个方法**。  
