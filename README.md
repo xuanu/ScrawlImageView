@@ -32,7 +32,8 @@ dependencies {
 - 取当前控件截图： `Bitmap getScreenShot()`    
 - 设置drawText()显示文字个数： `void setDrawTextCount(int count)`    
 - 设置画笔颜色 `void setPenColor(int pColor)`和画笔大小` void setPenSize(int size) `    
-- 设置橡皮擦大小： `void setEraserSize(int pSize)`  
+- 设置橡皮擦大小： `void setEraserSize(int pSize)`
+- 设置能否画线或文字 `setCanDraw(boolean)`
 效果：  
 ![image](https://github.com/xuanu/ScrawlImageView/raw/master/screenshots/device-2016-12-07-161347.png)  
 
