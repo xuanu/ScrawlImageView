@@ -48,6 +48,10 @@ public class SketchPadView extends ImageView {
      * 就用这个来存储图片的宽高了
      */
     private ViewPoint mPhotoSize = new ViewPoint();
+    /***
+     * 能否画线或文字
+     */
+    private boolean isCanDraw = true;
 
     public SketchPadView(Context context) {
         this(context, null);
@@ -83,7 +87,9 @@ public class SketchPadView extends ImageView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
+        if (!isCanDraw) {
+            return true;
+        }
         //
         float eventX = event.getX();
         float eventY = event.getY();
@@ -244,6 +250,15 @@ public class SketchPadView extends ImageView {
 
     }
 
+    /***
+     * 设置是否能画线或或者设置文字
+     *
+     * @param pCanDraw true能画线false不能画
+     */
+    public void setCanDraw(boolean pCanDraw) {
+        isCanDraw = pCanDraw;
+    }
+
     /**
      * 设置文字颜色，画图片上的。
      *
@@ -311,6 +326,9 @@ public class SketchPadView extends ImageView {
      * @param pText 作答文字
      */
     public void drawText(int index, float x, float y, String pText) {
+        if (!isCanDraw) {
+            return;
+        }
         x = toViewAxisX(x);
         y = toViewAxisY(y);
         float temp1Dp = 1;
