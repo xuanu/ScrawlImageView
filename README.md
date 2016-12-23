@@ -17,7 +17,7 @@ allprojects {
    
 ```
 dependencies {
-	        compile 'com.github.xuanu:ScrawlImageView:1.0.1'
+	        compile 'com.github.xuanu:ScrawlImageView:1.0.2'
 	}
 ```  
 
@@ -34,6 +34,7 @@ dependencies {
 - 设置画笔颜色 `void setPenColor(int pColor)`和画笔大小` void setPenSize(int size) `    
 - 设置橡皮擦大小： `void setEraserSize(int pSize)`
 - 设置能否画线或文字 `setCanDraw(boolean)`
+- 设置背景，自定义背景宽高 `setViewBackground(Bitmap pBitmap, float width, float height)`
 效果：  
 ![image](https://github.com/xuanu/ScrawlImageView/raw/master/screenshots/device-2016-12-07-161347.png)  
 

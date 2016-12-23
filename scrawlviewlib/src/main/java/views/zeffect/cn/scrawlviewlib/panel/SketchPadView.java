@@ -171,6 +171,31 @@ public class SketchPadView extends ImageView {
     }
 
     /**
+     * 设置图片宽高,可自定义
+     *
+     * @param pBitmap 图片
+     * @param width   自定义宽度
+     * @param height  自定义高度
+     */
+    public void setViewBackground(Bitmap pBitmap, float width, float height) {
+        if (pBitmap != null) {
+            clear();
+            ViewPoint tPoint = new ViewPoint();
+            if (width == 0f) {
+                width = pBitmap.getWidth();
+            }
+            tPoint.x = width;
+            if (height == 0f) {
+                height = pBitmap.getHeight();
+            }
+            tPoint.y = height;
+            mPhotoSize = tPoint;
+            this.setImageBitmap(pBitmap);
+        }
+
+    }
+
+    /**
      * 清空
      */
     public void clear() {
@@ -404,7 +429,7 @@ public class SketchPadView extends ImageView {
      * @param y
      * @return
      */
-    private float toPhotoAxisY(float y) {
+    public float toPhotoAxisY(float y) {
         float vH = getHeight();
         float pH = mPhotoSize.y;
         //
@@ -418,7 +443,7 @@ public class SketchPadView extends ImageView {
      * @param x
      * @return
      */
-    private float toViewAxisX(float x) {
+    public float toViewAxisX(float x) {
         float vW = getWidth();
         float pW = mPhotoSize.x;
         //
@@ -431,7 +456,7 @@ public class SketchPadView extends ImageView {
      * @param y
      * @return
      */
-    private float toViewAxisY(float y) {
+    public float toViewAxisY(float y) {
         float vH = getHeight();
         float pH = mPhotoSize.y;
         //
