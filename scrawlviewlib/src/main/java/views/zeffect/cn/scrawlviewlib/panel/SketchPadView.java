@@ -32,6 +32,7 @@ public class SketchPadView extends ImageView {
      **/
     private float HALF_STROKE_WIDTH = 0;
     private int m_strokeColor = Color.BLUE;
+    private int m_eraserColor = Color.WHITE;
     private int m_penSize;
     private int m_eraserSize;
     private PenType mPenType = PenType.Pen;
@@ -71,7 +72,7 @@ public class SketchPadView extends ImageView {
         if (type == PenType.Pen) {
             m_curTool = new SketchPadPen(m_penSize, m_strokeColor);
         } else if (type == PenType.Eraser) {
-            m_curTool = new SketchPadEraser(m_eraserSize);
+            m_curTool = new SketchPadEraser(m_eraserColor, m_eraserSize);
         }
         mPenType = type;
     }
@@ -201,7 +202,7 @@ public class SketchPadView extends ImageView {
     public void clear() {
         mLines.clear();
         m_curTool.cleanAll();
-        SketchPadEraser tempEraser = new SketchPadEraser(m_eraserSize);
+        SketchPadEraser tempEraser = new SketchPadEraser(m_eraserColor, m_eraserSize);
         tempEraser.drawRect(m_canvas, new Rect(0, 0, getWidth(), getHeight()));
         invalidate();
     }
@@ -237,7 +238,7 @@ public class SketchPadView extends ImageView {
                 if (pLine.width != 0) {
                     penSize = pLine.width;
                 }
-                tempTool = new SketchPadEraser(penSize);
+                tempTool = new SketchPadEraser(m_eraserColor, penSize);
             } else {
                 int penSize = m_penSize;
                 if (pLine.width != 0) {
@@ -359,7 +360,7 @@ public class SketchPadView extends ImageView {
         float temp1Dp = 1;
         //有无历史答案，有的话要擦掉
         if (mSaveAnswer.containsKey(index)) {
-            SketchPadEraser tempEraser = new SketchPadEraser(m_eraserSize);
+            SketchPadEraser tempEraser = new SketchPadEraser(m_eraserColor, m_eraserSize);
             String tempText = mSaveAnswer.get(index);
             float textWidth = m_bitmapPaint.measureText(tempText);
             double left = x - textWidth / 2 - temp1Dp;
@@ -484,6 +485,15 @@ public class SketchPadView extends ImageView {
         mPhotoSize.y = 800;
     }
 
+
+    public PenType getPenType() {
+        return mPenType;
+    }
+
+    public void setPenType(PenType pPenType) {
+        mPenType = pPenType;
+    }
+
     /**
      * 设置画笔颜色
      *
@@ -516,7 +526,19 @@ public class SketchPadView extends ImageView {
     public void setEraserSize(int pSize) {
         this.m_eraserSize = pSize;
         if (mPenType == PenType.Eraser) {
-            m_curTool = new SketchPadEraser(m_eraserSize);
+            m_curTool = new SketchPadEraser(m_eraserColor, m_eraserSize);
+        }
+    }
+
+    /**
+     * 设置画笔颜色
+     *
+     * @param pColor 色值
+     */
+    public void setEraserColor(int pColor) {
+        this.m_strokeColor = pColor;
+        if (mPenType == PenType.Eraser) {
+            m_curTool = new SketchPadEraser(m_eraserColor, m_eraserSize);
         }
     }
 

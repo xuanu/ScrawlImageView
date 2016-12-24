@@ -10,16 +10,15 @@ import android.graphics.Rect;
 
 public class SketchPadEraser implements ISketchPadTool {
     private static final float TOUCH_TOLERANCE = 0.0f;
-
     private float m_curX = 0.0f;
     private float m_curY = 0.0f;
     private Path m_eraserPath = new Path();
     private Paint m_eraserPaint = new Paint();
 
-    public SketchPadEraser(int eraserSize) {
+    public SketchPadEraser(int color,int eraserSize) {
         m_eraserPaint.setAntiAlias(true);
         m_eraserPaint.setDither(true);
-        m_eraserPaint.setColor(0xFF000000);
+        m_eraserPaint.setColor(color);
         m_eraserPaint.setStrokeWidth(eraserSize);
         m_eraserPaint.setStyle(Paint.Style.FILL);
         m_eraserPaint.setStrokeJoin(Paint.Join.ROUND);
