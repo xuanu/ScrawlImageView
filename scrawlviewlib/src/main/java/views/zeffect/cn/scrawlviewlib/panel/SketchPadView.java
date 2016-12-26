@@ -1,7 +1,6 @@
 package views.zeffect.cn.scrawlviewlib.panel;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -15,7 +14,6 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -97,12 +95,12 @@ public class SketchPadView extends ImageView {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 mLine = new Line();
-                mLine.color = m_curTool.getColor();
-                mLine.width = (int) m_curTool.getSize();
+                mLine.setColor(m_curTool.getColor());
+                mLine.setWidth((int) m_curTool.getSize());
                 if (mPenType == PenType.Pen) {
-                    mLine.type = 0;
+                    mLine.setType(0);
                 } else if (mPenType == PenType.Eraser) {
-                    mLine.type = 1;
+                    mLine.setType(1);
                 }
                 lastTouchX = eventX;
                 lastTouchY = eventY;
@@ -163,8 +161,8 @@ public class SketchPadView extends ImageView {
         if (pBitmap != null) {
             clear();
             ViewPoint tPoint = new ViewPoint();
-            tPoint.x = pBitmap.getWidth();
-            tPoint.y = pBitmap.getHeight();
+            tPoint.setX(pBitmap.getWidth());
+            tPoint.setY(pBitmap.getHeight());
             mPhotoSize = tPoint;
             this.setImageBitmap(pBitmap);
         }
@@ -185,11 +183,11 @@ public class SketchPadView extends ImageView {
             if (width == 0f) {
                 width = pBitmap.getWidth();
             }
-            tPoint.x = width;
+            tPoint.setX(width);
             if (height == 0f) {
                 height = pBitmap.getHeight();
             }
-            tPoint.y = height;
+            tPoint.setY(height);
             mPhotoSize = tPoint;
             this.setImageBitmap(pBitmap);
         }
@@ -223,52 +221,52 @@ public class SketchPadView extends ImageView {
         }
         for (Line pLine : pLines) {
             ISketchPadTool tempTool;
-            if (pLine.type == LINE_TYPE_PEN_0) {
+            if (pLine.getType() == LINE_TYPE_PEN_0) {
                 int penSize = m_penSize;
-                if (pLine.width != 0) {
-                    penSize = pLine.width;
+                if (pLine.getWidth() != 0) {
+                    penSize = pLine.getWidth();
                 }
                 int penColor = m_strokeColor;
-                if (pLine.color != 0) {
-                    penColor = pLine.color;
+                if (pLine.getColor() != 0) {
+                    penColor = pLine.getColor();
                 }
                 tempTool = new SketchPadPen(penSize, penColor);
-            } else if (pLine.type == LINE_TYPE_ERASER_1) {
+            } else if (pLine.getType() == LINE_TYPE_ERASER_1) {
                 int penSize = m_eraserSize;
-                if (pLine.width != 0) {
-                    penSize = pLine.width;
+                if (pLine.getWidth() != 0) {
+                    penSize = pLine.getWidth();
                 }
                 tempTool = new SketchPadEraser(m_eraserColor, penSize);
             } else {
                 int penSize = m_penSize;
-                if (pLine.width != 0) {
-                    penSize = pLine.width;
+                if (pLine.getWidth() != 0) {
+                    penSize = pLine.getWidth();
                 }
                 int penColor = m_strokeColor;
-                if (pLine.color != 0) {
-                    penColor = pLine.color;
+                if (pLine.getColor() != 0) {
+                    penColor = pLine.getColor();
                 }
                 tempTool = new SketchPadPen(penSize, penColor);
             }
             Path tempPath = new Path();
             float mX = 0;
             float mY = 0;
-            for (int i = 0; i < pLine.mPoints.size() - 1; i++) {
-                ViewPoint tempPoint = pLine.mPoints.get(i);
+            for (int i = 0; i < pLine.getPoints().size() - 1; i++) {
+                ViewPoint tempPoint = pLine.getPoints().get(i);
                 if (i == 0) {
-                    mX = toViewAxisX(tempPoint.x);
-                    mY = toViewAxisY(tempPoint.y);
+                    mX = toViewAxisX(tempPoint.getX());
+                    mY = toViewAxisY(tempPoint.getY());
                     tempPath.moveTo(mX, mY);
                 } else {
                     float previousX = mX;
                     float previousY = mY;
-                    ViewPoint nextPoint = pLine.mPoints.get(i + 1);
+                    ViewPoint nextPoint = pLine.getPoints().get(i + 1);
                     //设置贝塞尔曲线的操作点为起点和终点的一半
-                    float cX = (mX + toViewAxisX(nextPoint.x)) / 2;
-                    float cY = (mY + toViewAxisY(nextPoint.y)) / 2;
+                    float cX = (mX + toViewAxisX(nextPoint.getX())) / 2;
+                    float cY = (mY + toViewAxisY(nextPoint.getY())) / 2;
                     tempPath.quadTo(previousX, previousY, cX, cY);
-                    mX = toViewAxisX(nextPoint.x);
-                    mY = toViewAxisY(nextPoint.y);
+                    mX = toViewAxisX(nextPoint.getX());
+                    mY = toViewAxisY(nextPoint.getY());
                 }
             }
             tempTool.drawPath(m_canvas, tempPath);
@@ -406,9 +404,9 @@ public class SketchPadView extends ImageView {
      */
     private void savePoint(float eventX, float eventY) {
         ViewPoint tPoint = new ViewPoint();
-        tPoint.x = toPhotoAxisX(eventX);
-        tPoint.y = toPhotoAxisY(eventY);
-        mLine.mPoints.add(tPoint);
+        tPoint.setX(toPhotoAxisX(eventX));
+        tPoint.setY(toPhotoAxisY(eventY));
+        mLine.getPoints().add(tPoint);
     }
 
 
@@ -420,7 +418,7 @@ public class SketchPadView extends ImageView {
      */
     public float toPhotoAxisX(float x) {
         float vW = getWidth();
-        float pW = mPhotoSize.x;
+        float pW = mPhotoSize.getX();
         return pW * x / vW;
     }
 
@@ -432,7 +430,7 @@ public class SketchPadView extends ImageView {
      */
     public float toPhotoAxisY(float y) {
         float vH = getHeight();
-        float pH = mPhotoSize.y;
+        float pH = mPhotoSize.getY();
         //
         return y * pH / vH;
     }
@@ -446,7 +444,7 @@ public class SketchPadView extends ImageView {
      */
     public float toViewAxisX(float x) {
         float vW = getWidth();
-        float pW = mPhotoSize.x;
+        float pW = mPhotoSize.getX();
         //
         return x * vW / pW;
     }
@@ -459,7 +457,7 @@ public class SketchPadView extends ImageView {
      */
     public float toViewAxisY(float y) {
         float vH = getHeight();
-        float pH = mPhotoSize.y;
+        float pH = mPhotoSize.getY();
         //
         return y * vH / pH;
     }
@@ -481,8 +479,8 @@ public class SketchPadView extends ImageView {
         m_bitmapPaint.setStrokeWidth(1);
         setStrokeType(PenType.Pen);
         HALF_STROKE_WIDTH = m_penSize / 2;
-        mPhotoSize.x = 1280;
-        mPhotoSize.y = 800;
+        mPhotoSize.setX(640);
+        mPhotoSize.setY(480);
     }
 
 
@@ -588,90 +586,5 @@ public class SketchPadView extends ImageView {
         dirtyRect.right = Math.max(lastTouchX, eventX);
         dirtyRect.top = Math.min(lastTouchY, eventY);
         dirtyRect.bottom = Math.max(lastTouchY, eventY);
-    }
-
-    /**
-     * 代表一条线
-     */
-    public class Line {
-        /**
-         * 点的集合
-         */
-        private ArrayList<ViewPoint> mPoints = new ArrayList<>();
-        /**
-         * 线的颜色
-         */
-        private int color;
-        /**
-         * 线的宽度
-         */
-        private int width;
-        /**
-         * 用来标记是笔还是橡皮
-         * 0笔1橡皮
-         */
-        private int type;
-
-        public ArrayList<ViewPoint> getPoints() {
-            return mPoints;
-        }
-
-        public void setPoints(ArrayList<ViewPoint> pPoints) {
-            mPoints = pPoints;
-        }
-
-        public int getColor() {
-            return color;
-        }
-
-        public void setColor(int pColor) {
-            color = pColor;
-        }
-
-        public int getWidth() {
-            return width;
-        }
-
-        public void setWidth(int pWidth) {
-            width = pWidth;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-        public void setType(int pType) {
-            type = pType;
-        }
-    }
-
-    /**
-     * 点
-     */
-    public class ViewPoint {
-        /**
-         * X坐标
-         */
-        private float x;
-        /**
-         * Y坐标
-         */
-        private float y;
-
-        public float getX() {
-            return x;
-        }
-
-        public void setX(float pX) {
-            x = pX;
-        }
-
-        public float getY() {
-            return y;
-        }
-
-        public void setY(float pY) {
-            y = pY;
-        }
     }
 }
