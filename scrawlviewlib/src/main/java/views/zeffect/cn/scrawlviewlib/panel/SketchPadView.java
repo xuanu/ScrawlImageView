@@ -219,6 +219,7 @@ public class SketchPadView extends ImageView {
         if (pLines == null) {
             return;
         }
+        mLines.addAll(pLines);
         for (Line pLine : pLines) {
             ISketchPadTool tempTool;
             if (pLine.getType() == LINE_TYPE_PEN_0) {
