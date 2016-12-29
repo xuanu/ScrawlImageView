@@ -333,12 +333,93 @@ public class SketchPadView extends ImageView {
     }
 
     /**
-     * 用来保存用户回答的问题，便于清除
+     * 在图上画文字
+     * <p>
+     * <p>
+     * 步骤：
+     *
+     * @param x     X为图片中的X
+     * @param y     y为图片中的Y
+     * @param pText 作答文字
      */
-    private HashMap<Integer, String> mSaveAnswer = new HashMap<>();
+    public void drawText(float x, float y, String pText) {
+        drawText(x, y, pText, Color.BLUE);
+    }
+
+    public void drawText(float x, float y, String pText, int pColor) {
+        drawText(x, y, pText, Color.BLUE, sp2px(14));
+    }
+
+    public void drawText(float x, float y, String pText, int pColor, int pTextSize) {
+        if (!isCanDraw) {
+            return;
+        }
+        x = toViewAxisX(x);
+        y = toViewAxisY(y);
+        //
+        if (pText.length() >= mDrawTextCount) {
+            pText = pText.substring(0, mDrawTextCount);
+        }
+        if (pText == null) {
+            pText = "";
+        }
+        if (!TextUtils.isEmpty(pText)) {//空白不画东西
+            float textWidth = m_bitmapPaint.measureText(pText);
+            m_bitmapPaint.setColor(pColor);
+            m_bitmapPaint.setTextSize(pTextSize);
+            m_canvas.drawText(pText, x - textWidth / 2, y, m_bitmapPaint);
+        }
+        //
+        invalidate();
+    }
+
 
     /**
-     * 在图上画文字
+     * 用来保存用户回答的问题，便于清除
+     */
+    private HashMap<Integer, AnswerBean> mSaveAnswer = new HashMap<>();
+
+    private class AnswerBean {
+        /***
+         * 显示的文字，用户回答，正确答案
+         */
+        private String showText, userAnswer, rightAnswer, judgeText;
+
+        public String getJudgeText() {
+            return judgeText;
+        }
+
+        public void setJudgeText(String pJudgeText) {
+            judgeText = pJudgeText;
+        }
+
+        public String getShowText() {
+            return showText;
+        }
+
+        public void setShowText(String pShowText) {
+            showText = pShowText;
+        }
+
+        public String getUserAnswer() {
+            return userAnswer;
+        }
+
+        public void setUserAnswer(String pUserAnswer) {
+            userAnswer = pUserAnswer;
+        }
+
+        public String getRightAnswer() {
+            return rightAnswer;
+        }
+
+        public void setRightAnswer(String pRightAnswer) {
+            rightAnswer = pRightAnswer;
+        }
+    }
+
+    /**
+     * 自用函数,在图上画文字还要画序号和对错
      * <p>
      * 可能存在问题。两个问题之间太近就会存在问题。
      * 步骤：
@@ -350,7 +431,7 @@ public class SketchPadView extends ImageView {
      * @param y     y为图片中的Y
      * @param pText 作答文字
      */
-    public void drawText(int index, float x, float y, String pText) {
+    public void drawForMy(int index, float x, float y, String pText, String rightAnswer) {
         if (!isCanDraw) {
             return;
         }
@@ -360,7 +441,8 @@ public class SketchPadView extends ImageView {
         //有无历史答案，有的话要擦掉
         if (mSaveAnswer.containsKey(index)) {
             SketchPadEraser tempEraser = new SketchPadEraser(m_eraserColor, m_eraserSize);
-            String tempText = mSaveAnswer.get(index);
+            AnswerBean tempAnswerBean = mSaveAnswer.get(index);
+            String tempText = tempAnswerBean.getShowText();
             float textWidth = m_bitmapPaint.measureText(tempText);
             double left = x - textWidth / 2 - temp1Dp;
             double top = y + m_bitmapPaint.getFontMetrics().top - temp1Dp;
@@ -369,6 +451,17 @@ public class SketchPadView extends ImageView {
             Rect tRectF = new Rect((int) Math.floor(left), (int) Math.floor(top), (int) Math.ceil(right), (int) Math.ceil(bottom));
             tempEraser.drawRect(m_canvas, tRectF);
             invalidate(tRectF);
+            ///
+            float fontHeight = (float) Math.ceil(m_bitmapPaint.getFontMetrics().descent - m_bitmapPaint.getFontMetrics().ascent);
+            String tempJudgeText = tempAnswerBean.getJudgeText();
+            float textWidth2 = mJudgePaint.measureText(tempJudgeText);
+            double left2 = x - temp1Dp;
+            double top2 = y + fontHeight / 2 + mJudgePaint.getFontMetrics().top - temp1Dp;
+            double right2 = x + textWidth2 + temp1Dp;
+            double bottom2 = y + fontHeight / 2 + temp1Dp + mJudgePaint.getFontMetrics().bottom;
+            Rect tRect2 = new Rect((int) Math.floor(left2), (int) Math.floor(top2), (int) Math.ceil(right2), (int) Math.ceil(bottom2));
+            tempEraser.drawRect(m_canvas, tRect2);
+            invalidate(tRect2);
         }
         //
         if (pText.length() >= mDrawTextCount) {
@@ -377,16 +470,37 @@ public class SketchPadView extends ImageView {
         if (pText == null) {
             pText = "";
         }
-        String drawText = String.valueOf(index + 1) + "." + pText;
-        if (!TextUtils.isEmpty(drawText)) {//空白不画东西
-            float textWidth = m_bitmapPaint.measureText(drawText);
-            m_canvas.drawText(drawText, x - textWidth / 2, y, m_bitmapPaint);
+        if (rightAnswer == null) {
+            rightAnswer = "";
+        }
+        String showText = String.valueOf(index) + "." + pText;
+        float fontHeight = (float) Math.ceil(m_bitmapPaint.getFontMetrics().descent - m_bitmapPaint.getFontMetrics().ascent);
+        float textWidth = m_bitmapPaint.measureText(showText);
+        m_canvas.drawText(pText, x - textWidth / 2, y, m_bitmapPaint);
+        AnswerBean tempBean = new AnswerBean();
+        if (!TextUtils.isEmpty(rightAnswer)) {
+            String judgeString = "";
+            if (pText.equals(rightAnswer)) {
+                judgeString = RIGHT;
+            } else {
+                judgeString = WRONG;
+            }
+            tempBean.setJudgeText(judgeString);
+            m_canvas.drawText(judgeString, x, y + fontHeight / 2, mJudgePaint);
         }
         //
-        mSaveAnswer.put(index, drawText);
+
+        tempBean.setRightAnswer(rightAnswer);
+        tempBean.setUserAnswer(pText);
+        tempBean.setShowText(showText);
+        mSaveAnswer.put(index, tempBean);
         invalidate();
     }
 
+    public static final String RIGHT = "√";
+    public static final String WRONG = "×";
+
+    private Paint mJudgePaint;
 
     /**
      * 返回当前图的所有笔画
@@ -478,10 +592,22 @@ public class SketchPadView extends ImageView {
         m_bitmapPaint.setStyle(Paint.Style.FILL);
         m_bitmapPaint.setTextSize(sp2px(14));
         m_bitmapPaint.setStrokeWidth(1);
+        mJudgePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mJudgePaint.setAntiAlias(true);
+        mJudgePaint.setColor(Color.RED);
+        mJudgePaint.setStyle(Paint.Style.FILL);
+        mJudgePaint.setStrokeCap(Paint.Cap.ROUND);// 圆滑
+        mJudgePaint.setStrokeJoin(Paint.Join.ROUND);
+        mJudgePaint.setStrokeWidth(dp2px(1));
+        mJudgePaint.setTextSize(sp2px(20));
         setStrokeType(PenType.Pen);
         HALF_STROKE_WIDTH = m_penSize / 2;
         mPhotoSize.setX(640);
         mPhotoSize.setY(480);
+    }
+
+    private int dp2px(float dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getContext().getResources().getDisplayMetrics());
     }
 
 

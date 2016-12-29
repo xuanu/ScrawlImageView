@@ -27,7 +27,7 @@ dependencies {
 - 设置背景图一定要使用  **setViewBackground(Bitmap);**,不然得不到图片的大小不好处理画线位置。    
 - 记录画过的笔迹。  `List<Line> getLines();`    
 - 把笔迹绘制到图中  `drawLines(List<Line>);`  Line.type:0代表笔1代表橡皮,会把当前线添加到线的历史
-- 增加方法：把文字画到图中 `drawText(int index,float x,float y,String text)`  
+- 增加方法：把文字画到图中 `drawText(float x,float y,String text)`后面有可靠的两个参数
 - 设置文字颜色和大小： `setTextSize(int),setTextColor(int)`，没有判断是否为色值    
 - 取当前控件截图： `Bitmap getScreenShot()`    
 - 设置drawText()显示文字个数： `void setDrawTextCount(int count)`    
@@ -35,6 +35,7 @@ dependencies {
 - 设置橡皮擦大小： `void setEraserSize(int pSize)`
 - 设置能否画线或文字 `setCanDraw(boolean)`,当设置为false，不处理事件
 - 设置背景，自定义背景宽高 `setViewBackground(Bitmap pBitmap, float width, float height)`
+- 增加一个自用函数： `drawForMy(index,x,y,text,rightText)`  在图上用户未回答画题号，回答了画答案和对错
 效果：  
 ![image](https://github.com/xuanu/ScrawlImageView/raw/master/screenshots/device-2016-12-07-161347.png)  
 
