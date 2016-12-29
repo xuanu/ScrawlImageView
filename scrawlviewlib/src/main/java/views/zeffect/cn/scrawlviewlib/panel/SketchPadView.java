@@ -87,7 +87,7 @@ public class SketchPadView extends ImageView {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (!isCanDraw) {
-            return true;
+            return false;
         }
         //
         float eventX = event.getX();
