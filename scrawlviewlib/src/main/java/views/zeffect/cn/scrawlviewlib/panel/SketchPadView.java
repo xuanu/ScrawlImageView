@@ -496,18 +496,15 @@ public class SketchPadView extends ImageView {
         float textWidth = m_bitmapPaint.measureText(showText);
         m_canvas.drawText(pText, x - textWidth / 2, y, m_bitmapPaint);
         AnswerBean tempBean = new AnswerBean();
-        if (!TextUtils.isEmpty(rightAnswer)) {
-            String judgeString = "";
-            if (pText.equals(rightAnswer)) {
-                judgeString = RIGHT;
-            } else {
-                judgeString = WRONG;
-            }
-            tempBean.setJudgeText(judgeString);
-            m_canvas.drawText(judgeString, x, y + fontHeight / 2, mJudgePaint);
+        String judgeString = "";
+        if (pText.equals(rightAnswer)) {
+            judgeString = RIGHT;
+        } else {
+            judgeString = WRONG;
         }
+        tempBean.setJudgeText(judgeString);
+        m_canvas.drawText(judgeString, x, y + fontHeight / 2, mJudgePaint);
         //
-
         tempBean.setRightAnswer(rightAnswer);
         tempBean.setUserAnswer(pText);
         tempBean.setShowText(showText);
