@@ -470,16 +470,18 @@ public class SketchPadView extends ImageView {
             tempEraser.drawRect(m_canvas, tRectF);
             invalidate(tRectF);
             ///
-            float fontHeight = (float) Math.ceil(m_bitmapPaint.getFontMetrics().descent - m_bitmapPaint.getFontMetrics().ascent);
             String tempJudgeText = tempAnswerBean.getJudgeText();
-            float textWidth2 = mJudgePaint.measureText(tempJudgeText);
-            double left2 = x - temp1Dp;
-            double top2 = y + fontHeight / 2 + mJudgePaint.getFontMetrics().top - temp1Dp;
-            double right2 = x + textWidth2 + temp1Dp;
-            double bottom2 = y + fontHeight / 2 + temp1Dp + mJudgePaint.getFontMetrics().bottom;
-            Rect tRect2 = new Rect((int) Math.floor(left2), (int) Math.floor(top2), (int) Math.ceil(right2), (int) Math.ceil(bottom2));
-            tempEraser.drawRect(m_canvas, tRect2);
-            invalidate(tRect2);
+            if (!TextUtils.isEmpty(tempJudgeText)) {
+                float fontHeight = (float) Math.ceil(m_bitmapPaint.getFontMetrics().descent - m_bitmapPaint.getFontMetrics().ascent);
+                float textWidth2 = mJudgePaint.measureText(tempJudgeText);
+                double left2 = x - temp1Dp;
+                double top2 = y + fontHeight / 2 + mJudgePaint.getFontMetrics().top - temp1Dp;
+                double right2 = x + textWidth2 + temp1Dp;
+                double bottom2 = y + fontHeight / 2 + temp1Dp + mJudgePaint.getFontMetrics().bottom;
+                Rect tRect2 = new Rect((int) Math.floor(left2), (int) Math.floor(top2), (int) Math.ceil(right2), (int) Math.ceil(bottom2));
+                tempEraser.drawRect(m_canvas, tRect2);
+                invalidate(tRect2);
+            }
         }
         //
         if (pText.length() >= mDrawTextCount) {
@@ -497,15 +499,17 @@ public class SketchPadView extends ImageView {
         m_canvas.drawText(pText, x - textWidth / 2, y, m_bitmapPaint);
         AnswerBean tempBean = new AnswerBean();
         String judgeString = "";
-        if (pText.equals(rightAnswer)) {
-            judgeString = RIGHT;
-        } else {
-            judgeString = WRONG;
+        if (!TextUtils.isEmpty(rightAnswer)) {
+            if (pText.equals(rightAnswer)) {
+                judgeString = RIGHT;
+            } else {
+                judgeString = WRONG;
+            }
+            m_canvas.drawText(judgeString, x, y + fontHeight / 2, mJudgePaint);
         }
-        tempBean.setJudgeText(judgeString);
-        m_canvas.drawText(judgeString, x, y + fontHeight / 2, mJudgePaint);
         //
         tempBean.setRightAnswer(rightAnswer);
+        tempBean.setJudgeText(judgeString);
         tempBean.setUserAnswer(pText);
         tempBean.setShowText(showText);
         mSaveAnswer.put(index, tempBean);
