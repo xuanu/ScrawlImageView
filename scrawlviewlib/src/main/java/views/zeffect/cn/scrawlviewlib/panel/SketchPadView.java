@@ -418,7 +418,7 @@ public class SketchPadView extends ImageView {
         }
     }
 
-    /**
+    /***
      * 自用函数,在图上画文字还要画序号和对错
      * <p>
      * 可能存在问题。两个问题之间太近就会存在问题。
@@ -430,6 +430,24 @@ public class SketchPadView extends ImageView {
      * @param x     X为图片中的X
      * @param y     y为图片中的Y
      * @param pText 作答文字
+     */
+    public void drawForMy(int index, float x, float y, String pText) {
+        drawForMy(index, x, y, pText, "");
+    }
+
+    /**
+     * 自用函数,在图上画文字还要画序号和对错
+     * <p>
+     * 可能存在问题。两个问题之间太近就会存在问题。
+     * 步骤：
+     * 1.检测上一次有无作答：有，擦掉。
+     * 2.画本次问题，text为空，画题号
+     *
+     * @param index       题号 从0开始默认+1
+     * @param x           X为图片中的X
+     * @param y           y为图片中的Y
+     * @param pText       作答文字
+     * @param rightAnswer 正确答案
      */
     public void drawForMy(int index, float x, float y, String pText, String rightAnswer) {
         if (!isCanDraw) {
