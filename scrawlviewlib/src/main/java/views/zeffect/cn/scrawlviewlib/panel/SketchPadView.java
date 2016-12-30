@@ -493,7 +493,7 @@ public class SketchPadView extends ImageView {
         if (rightAnswer == null) {
             rightAnswer = "";
         }
-        String showText = String.valueOf(index) + "." + pText;
+        String showText = String.valueOf(index + 1) + "." + pText;
         float fontHeight = (float) Math.ceil(m_bitmapPaint.getFontMetrics().descent - m_bitmapPaint.getFontMetrics().ascent);
         float textWidth = m_bitmapPaint.measureText(showText);
         m_canvas.drawText(pText, x - textWidth / 2, y, m_bitmapPaint);
