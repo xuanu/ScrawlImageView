@@ -129,12 +129,12 @@ public class SketchPadView extends ImageView {
                 mLines.add(mLine);
                 break;
         }
-        invalidate(
-                (int) (dirtyRect.left - HALF_STROKE_WIDTH),
-                (int) (dirtyRect.top - HALF_STROKE_WIDTH),
-                (int) (dirtyRect.right + HALF_STROKE_WIDTH),
-                (int) (dirtyRect.bottom + HALF_STROKE_WIDTH));
-
+//        invalidate(
+//                (int) (dirtyRect.left - HALF_STROKE_WIDTH),
+//                (int) (dirtyRect.top - HALF_STROKE_WIDTH),
+//                (int) (dirtyRect.right + HALF_STROKE_WIDTH),
+//                (int) (dirtyRect.bottom + HALF_STROKE_WIDTH));
+        invalidate();
         lastTouchX = eventX;
         lastTouchY = eventY;
         return true;

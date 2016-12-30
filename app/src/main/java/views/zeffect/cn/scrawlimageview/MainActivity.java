@@ -15,7 +15,6 @@ import views.zeffect.cn.scrawlviewlib.panel.SketchPadView;
 
 public class MainActivity extends AppCompatActivity {
     SketchPadView mSketchPadView;
-    List<SketchPadView.Line> tempLines = new LinkedList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,20 +40,12 @@ public class MainActivity extends AppCompatActivity {
         tempButton3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mSketchPadView.setStrokeType(SketchPadView.PenType.Scale);
-                tempLines.addAll(mSketchPadView.getLines());
-                mSketchPadView.clear();
-                mSketchPadView.drawLines(tempLines);
-                tempLines.clear();
             }
         });
         Button tempButton4 = (Button) findViewById(R.id.random_text);
         tempButton4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i = 0; i < 10; i++) {
-                    mSketchPadView.drawText(i, i * 100, i * 100, "随机写字");
-                }
             }
         });
         Button tempButton5 = (Button) findViewById(R.id.screenshot);
