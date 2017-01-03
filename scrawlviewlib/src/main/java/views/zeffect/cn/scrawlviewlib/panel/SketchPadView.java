@@ -468,7 +468,7 @@ public class SketchPadView extends ImageView {
             double bottom = y + temp1Dp + m_bitmapPaint.getFontMetrics().bottom;
             Rect tRectF = new Rect((int) Math.floor(left), (int) Math.floor(top), (int) Math.ceil(right), (int) Math.ceil(bottom));
             tempEraser.drawRect(m_canvas, tRectF);
-            invalidate(tRectF);
+            invalidate();
             ///
             String tempJudgeText = tempAnswerBean.getJudgeText();
             if (!TextUtils.isEmpty(tempJudgeText)) {
@@ -480,7 +480,7 @@ public class SketchPadView extends ImageView {
                 double bottom2 = y + fontHeight / 2 + temp1Dp + mJudgePaint.getFontMetrics().bottom;
                 Rect tRect2 = new Rect((int) Math.floor(left2), (int) Math.floor(top2), (int) Math.ceil(right2), (int) Math.ceil(bottom2));
                 tempEraser.drawRect(m_canvas, tRect2);
-                invalidate(tRect2);
+                invalidate();
             }
         }
         //
@@ -493,7 +493,7 @@ public class SketchPadView extends ImageView {
         if (rightAnswer == null) {
             rightAnswer = "";
         }
-        String showText = String.valueOf(index + 1) + "." + pText;
+        String showText = pText;
         float fontHeight = (float) Math.ceil(m_bitmapPaint.getFontMetrics().descent - m_bitmapPaint.getFontMetrics().ascent);
         float textWidth = m_bitmapPaint.measureText(showText);
         m_canvas.drawText(showText, x - textWidth / 2, y, m_bitmapPaint);
@@ -520,6 +520,31 @@ public class SketchPadView extends ImageView {
     public static final String WRONG = "×";
 
     private Paint mJudgePaint;
+
+    /****
+     * 设置正确答案的文字大小
+     *
+     * @param pSize 大小
+     */
+    public void setJudgeTextSize(float pSize) {
+        if (mJudgePaint == null) {
+            mJudgePaint = new Paint();
+        }
+        mJudgePaint.setTextSize(pSize);
+    }
+
+    /****
+     * 设置正确答案的文字颜色
+     *
+     * @param pColor 颜色
+     */
+    public void setJudgeTextColor(int pColor) {
+        if (mJudgePaint == null) {
+            mJudgePaint = new Paint();
+        }
+        mJudgePaint.setColor(pColor);
+    }
+
 
     /**
      * 返回当前图的所有笔画

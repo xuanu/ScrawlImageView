@@ -17,7 +17,7 @@ allprojects {
    
 ```
 dependencies {
-	        compile 'com.github.xuanu:ScrawlImageView:2.0.0'
+	        compile 'com.github.xuanu:ScrawlImageView:1.1.1'
 	}
 ```  
 
