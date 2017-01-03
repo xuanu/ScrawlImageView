@@ -604,7 +604,7 @@ public class SketchPadView extends ImageView {
 
     protected void initialize() {
         m_penSize = (int) getResources().getDimension(R.dimen.pen_size);
-        m_eraserSize = 2 * m_penSize;
+        m_eraserSize = 5 * m_penSize;
         m_canvas = new Canvas();
         m_bitmapPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         m_bitmapPaint.setColor(Color.BLUE);

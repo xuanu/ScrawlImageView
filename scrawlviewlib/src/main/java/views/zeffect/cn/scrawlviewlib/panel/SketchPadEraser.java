@@ -20,7 +20,7 @@ public class SketchPadEraser implements ISketchPadTool {
         m_eraserPaint.setDither(true);
         m_eraserPaint.setColor(color);
         m_eraserPaint.setStrokeWidth(eraserSize);
-        m_eraserPaint.setStyle(Paint.Style.FILL);
+        m_eraserPaint.setStyle(Paint.Style.STROKE);
         m_eraserPaint.setStrokeJoin(Paint.Join.ROUND);
         m_eraserPaint.setStrokeCap(Paint.Cap.SQUARE);
         m_eraserPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
