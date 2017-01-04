@@ -52,6 +52,11 @@ public class SketchPadView extends ImageView {
      */
     private boolean isCanDraw = true;
 
+    /**
+     * 手指动作
+     */
+    private OnFingerAction mFingerAction;
+
     public SketchPadView(Context context) {
         this(context, null);
     }
@@ -127,6 +132,9 @@ public class SketchPadView extends ImageView {
                 m_curTool.draw(m_canvas);
                 savePoint(eventX, eventY);
                 mLines.add(mLine);
+                if (mFingerAction != null) {
+                    mFingerAction.onFingerUp(mLine);
+                }
                 break;
         }
 //        invalidate(
@@ -150,6 +158,15 @@ public class SketchPadView extends ImageView {
         if (mPenType != PenType.Eraser) {
             m_curTool.draw(canvas);
         }
+    }
+
+    /**
+     * 设置事件
+     *
+     * @param pAction
+     */
+    public void setFingerAction(OnFingerAction pAction) {
+        this.mFingerAction = pAction;
     }
 
     /**
@@ -735,5 +752,18 @@ public class SketchPadView extends ImageView {
         dirtyRect.right = Math.max(lastTouchX, eventX);
         dirtyRect.top = Math.min(lastTouchY, eventY);
         dirtyRect.bottom = Math.max(lastTouchY, eventY);
+    }
+
+
+    /**
+     * 手指事件
+     */
+    public interface OnFingerAction {
+        /**
+         * 手指抬起
+         *
+         * @param pLine
+         */
+        public void onFingerUp(Line pLine);
     }
 }
