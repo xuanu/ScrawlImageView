@@ -17,7 +17,7 @@ allprojects {
    
 ```
 dependencies {
-	        compile 'com.github.xuanu:ScrawlImageView:1.1.3'
+	        compile 'com.github.xuanu:ScrawlImageView:1.1.4'
 	}
 ```  
 
@@ -35,7 +35,6 @@ dependencies {
 - 设置橡皮擦大小： `void setEraserSize(int pSize)`
 - 设置能否画线或文字 `setCanDraw(boolean)`,当设置为false，不处理事件
 - 设置背景，自定义背景宽高 `setViewBackground(Bitmap pBitmap, float width, float height)`
-- 增加一个自用函数： `drawForMy(index,x,y,text,rightText)`  在图上用户未回答画题号，回答了画答案和对错
 效果：  
 ![image](https://github.com/xuanu/ScrawlImageView/raw/master/screenshots/device-2016-12-07-161347.png)  
 
