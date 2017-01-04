@@ -29,6 +29,7 @@ public class SketchPadEraser implements ISketchPadTool {
     @Override
     public void draw(Canvas canvas) {
         if (null != canvas) {
+            m_eraserPaint.setStyle(Paint.Style.STROKE);
             canvas.drawPath(m_eraserPath, m_eraserPaint);
         }
     }
@@ -65,6 +66,7 @@ public class SketchPadEraser implements ISketchPadTool {
     @Override
     public void drawRect(Canvas pCanvas, Rect pRect) {
         if (pCanvas != null && pRect != null) {
+            m_eraserPaint.setStyle(Paint.Style.FILL);
             pCanvas.drawRect(pRect, m_eraserPaint);
         }
     }
@@ -84,6 +86,7 @@ public class SketchPadEraser implements ISketchPadTool {
         if (pCanvas == null || pPath == null) {
             return;
         }
+        m_eraserPaint.setStyle(Paint.Style.STROKE);
         pCanvas.drawPath(pPath, m_eraserPaint);
     }
 }

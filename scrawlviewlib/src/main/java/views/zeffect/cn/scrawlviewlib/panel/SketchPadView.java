@@ -383,7 +383,7 @@ public class SketchPadView extends ImageView {
         /***
          * 显示的文字，用户回答，正确答案
          */
-        private String showText, userAnswer, rightAnswer, judgeText;
+        private String showText, judgeText;
 
         public String getJudgeText() {
             return judgeText;
@@ -400,22 +400,6 @@ public class SketchPadView extends ImageView {
         public void setShowText(String pShowText) {
             showText = pShowText;
         }
-
-        public String getUserAnswer() {
-            return userAnswer;
-        }
-
-        public void setUserAnswer(String pUserAnswer) {
-            userAnswer = pUserAnswer;
-        }
-
-        public String getRightAnswer() {
-            return rightAnswer;
-        }
-
-        public void setRightAnswer(String pRightAnswer) {
-            rightAnswer = pRightAnswer;
-        }
     }
 
     /***
@@ -426,13 +410,13 @@ public class SketchPadView extends ImageView {
      * 1.检测上一次有无作答：有，擦掉。
      * 2.画本次问题，text为空，画题号
      *
-     * @param index 题号 从0开始默认+1
-     * @param x     X为图片中的X
-     * @param y     y为图片中的Y
-     * @param pText 作答文字
+     * @param index    题号 从0开始默认+1
+     * @param x        X为图片中的X
+     * @param y        y为图片中的Y
+     * @param showText 要显示的文字
      */
-    public void drawForMy(int index, float x, float y, String pText) {
-        drawForMy(index, x, y, pText, "");
+    public void drawForMy(int index, float x, float y, String showText) {
+        drawForMy(index, x, y, showText, "", false);
     }
 
     /**
@@ -446,10 +430,11 @@ public class SketchPadView extends ImageView {
      * @param index       题号 从0开始默认+1
      * @param x           X为图片中的X
      * @param y           y为图片中的Y
-     * @param pText       作答文字
-     * @param rightAnswer 正确答案
+     * @param showText    要显示的文字
+     * @param showJudge   要显示的对错，可以显示别的
+     * @param isShowJudge 是否显示对错的文字
      */
-    public void drawForMy(int index, float x, float y, String pText, String rightAnswer) {
+    public void drawForMy(int index, float x, float y, String showText, String showJudge, boolean isShowJudge) {
         if (!isCanDraw) {
             return;
         }
@@ -484,40 +469,33 @@ public class SketchPadView extends ImageView {
             }
         }
         //
-        if (pText.length() >= mDrawTextCount) {
-            pText = pText.substring(0, mDrawTextCount);
+        if (showText == null) {
+            showText = "";
         }
-        if (pText == null) {
-            pText = "";
+        if (showText.length() >= mDrawTextCount) {
+            showText = showText.substring(0, mDrawTextCount);
         }
-        if (rightAnswer == null) {
-            rightAnswer = "";
+        if (showJudge == null) {
+            showJudge = "";
         }
-        String showText = pText;
         float fontHeight = (float) Math.ceil(m_bitmapPaint.getFontMetrics().descent - m_bitmapPaint.getFontMetrics().ascent);
-        float textWidth = m_bitmapPaint.measureText(showText);
-        m_canvas.drawText(showText, x - textWidth / 2, y, m_bitmapPaint);
+        if (!TextUtils.isEmpty(showText)) {
+            float textWidth = m_bitmapPaint.measureText(showText);
+            m_canvas.drawText(showText, x - textWidth / 2, y, m_bitmapPaint);
+        }
         AnswerBean tempBean = new AnswerBean();
-        String judgeString = "";
-        if (!TextUtils.isEmpty(rightAnswer)) {
-            if (pText.equals(rightAnswer)) {
-                judgeString = RIGHT;
-            } else {
-                judgeString = WRONG;
+        if (!TextUtils.isEmpty(showJudge)) {
+            if (isShowJudge) {
+                m_canvas.drawText(showJudge, x, y + fontHeight / 2, mJudgePaint);
             }
-            m_canvas.drawText(judgeString, x, y + fontHeight / 2, mJudgePaint);
         }
         //
-        tempBean.setRightAnswer(rightAnswer);
-        tempBean.setJudgeText(judgeString);
-        tempBean.setUserAnswer(pText);
+        tempBean.setJudgeText(showJudge);
         tempBean.setShowText(showText);
         mSaveAnswer.put(index, tempBean);
         invalidate();
     }
 
-    public static final String RIGHT = "√";
-    public static final String WRONG = "×";
 
     private Paint mJudgePaint;
 
