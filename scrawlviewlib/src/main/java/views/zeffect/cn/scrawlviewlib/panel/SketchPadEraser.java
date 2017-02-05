@@ -15,7 +15,7 @@ public class SketchPadEraser implements ISketchPadTool {
     private Path m_eraserPath = new Path();
     private Paint m_eraserPaint = new Paint();
 
-    public SketchPadEraser(int color,int eraserSize) {
+    public SketchPadEraser(int color, int eraserSize) {
         m_eraserPaint.setAntiAlias(true);
         m_eraserPaint.setDither(true);
         m_eraserPaint.setColor(color);
@@ -31,6 +31,8 @@ public class SketchPadEraser implements ISketchPadTool {
         if (null != canvas) {
             m_eraserPaint.setStyle(Paint.Style.STROKE);
             canvas.drawPath(m_eraserPath, m_eraserPaint);
+            m_eraserPath.reset();
+            m_eraserPath.moveTo(m_curX, m_curY);
         }
     }
 
@@ -51,11 +53,12 @@ public class SketchPadEraser implements ISketchPadTool {
     public void touchMove(float x, float y) {
         float dx = Math.abs(x - m_curX);
         float dy = Math.abs(y - m_curY);
-        if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-            m_eraserPath.quadTo(m_curX, m_curY, (x + m_curX) / 2, (y + m_curY) / 2);
-            m_curX = x;
-            m_curY = y;
-        }
+//        if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
+//            m_eraserPath.quadTo(m_curX, m_curY, (x + m_curX) / 2, (y + m_curY) / 2);
+        m_eraserPath.quadTo((x + m_curX) / 2, (y + m_curY) / 2, x, y);
+        m_curX = x;
+        m_curY = y;
+//        }
     }
 
     @Override
