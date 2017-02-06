@@ -49,12 +49,12 @@ public class SketchPadPen implements ISketchPadTool {
         float dx = Math.abs(x - m_curX);
         float dy = Math.abs(y - m_curY);
 
-//        if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-//            m_penPath.quadTo(m_curX, m_curY, (x + m_curX) / 2, (y + m_curY) / 2);
-        m_penPath.quadTo((x + m_curX) / 2, (y + m_curY) / 2, x, y);
+        if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
+            m_penPath.quadTo(m_curX, m_curY, (x + m_curX) / 2, (y + m_curY) / 2);
+//        m_penPath.quadTo((x + m_curX) / 2, (y + m_curY) / 2, x, y);
             m_curX = x;
             m_curY = y;
-//        }
+        }
     }
 
     @Override
@@ -85,5 +85,10 @@ public class SketchPadPen implements ISketchPadTool {
             return;
         }
         pCanvas.drawPath(pPath, m_penPaint);
+    }
+
+    @Override
+    public void drawToastCircle(Canvas pCanvas,float x,float y) {
+
     }
 }

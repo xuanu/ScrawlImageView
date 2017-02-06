@@ -94,6 +94,7 @@ public class SketchPadView extends ImageView {
         if (!isCanDraw) {
             return false;
         }
+        mIsTouchUp = false;
         //
         float eventX = event.getX();
         float eventY = event.getY();
@@ -121,13 +122,11 @@ public class SketchPadView extends ImageView {
                     float historicalY = event.getHistoricalY(i);
                     savePoint(historicalX, historicalY);
                     expandDirtyRect(historicalX, historicalY);
-                    m_curTool.touchMove(historicalX, historicalY);
-                    if (mPenType == PenType.Eraser) {
-                        m_curTool.draw(m_canvas);
-                    }
+                    m_curTool.touchMove(eventX, eventY);
                 }
                 break;
             case MotionEvent.ACTION_UP:
+                mIsTouchUp = true;
                 m_curTool.touchUp(event.getX(), event.getY());
                 m_curTool.draw(m_canvas);
                 savePoint(eventX, eventY);
@@ -148,15 +147,27 @@ public class SketchPadView extends ImageView {
         return true;
     }
 
+    /**
+     * 手指是否抬起来
+     */
+    private boolean mIsTouchUp = false;
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if (mPenType == PenType.Eraser) {
+            if (!mIsTouchUp) {
+                m_curTool.drawToastCircle(canvas, lastTouchX, lastTouchY);
+                m_curTool.draw(m_canvas);
+            }
+        }
         if (null != m_foreBitmap) {
             canvas.drawBitmap(m_foreBitmap, 0, 0, m_bitmapPaint);
         }
         if (mPenType != PenType.Eraser) {
-            m_curTool.draw(canvas);
+            if (!mIsTouchUp) {
+                m_curTool.draw(canvas);
+            }
         }
     }
 
@@ -472,7 +483,7 @@ public class SketchPadView extends ImageView {
     }
 
     protected void initialize() {
-        m_penSize = (int) getResources().getDimension(R.dimen.pen_size);
+        m_penSize = 2;//(int) getResources().getDimension(R.dimen.pen_size);
         m_eraserSize = 5 * m_penSize;
         m_canvas = new Canvas();
         m_bitmapPaint = new Paint(Paint.ANTI_ALIAS_FLAG);

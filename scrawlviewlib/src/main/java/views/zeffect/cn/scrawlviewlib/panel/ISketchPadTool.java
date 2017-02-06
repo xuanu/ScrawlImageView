@@ -23,4 +23,6 @@ public interface ISketchPadTool {
     public float getSize();
 
     public void drawPath(Canvas pCanvas, Path pPath);
+
+    public void drawToastCircle(Canvas pCanvas,float x,float y);
 }

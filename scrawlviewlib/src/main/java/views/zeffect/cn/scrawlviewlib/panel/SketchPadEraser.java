@@ -1,6 +1,7 @@
 package views.zeffect.cn.scrawlviewlib.panel;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
@@ -14,6 +15,8 @@ public class SketchPadEraser implements ISketchPadTool {
     private float m_curY = 0.0f;
     private Path m_eraserPath = new Path();
     private Paint m_eraserPaint = new Paint();
+    private int mEraserSize;
+    private Paint mToastPaint = new Paint();
 
     public SketchPadEraser(int color, int eraserSize) {
         m_eraserPaint.setAntiAlias(true);
@@ -24,6 +27,14 @@ public class SketchPadEraser implements ISketchPadTool {
         m_eraserPaint.setStrokeJoin(Paint.Join.ROUND);
         m_eraserPaint.setStrokeCap(Paint.Cap.SQUARE);
         m_eraserPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_OUT));
+        mEraserSize = eraserSize;
+        mToastPaint.setAntiAlias(true);
+        mToastPaint.setDither(true);
+        mToastPaint.setColor(Color.GRAY);
+        mToastPaint.setStrokeWidth(1);
+        mToastPaint.setStyle(Paint.Style.STROKE);
+        mToastPaint.setStrokeJoin(Paint.Join.ROUND);
+        mToastPaint.setStrokeCap(Paint.Cap.ROUND);
     }
 
     @Override
@@ -31,8 +42,6 @@ public class SketchPadEraser implements ISketchPadTool {
         if (null != canvas) {
             m_eraserPaint.setStyle(Paint.Style.STROKE);
             canvas.drawPath(m_eraserPath, m_eraserPaint);
-            m_eraserPath.reset();
-            m_eraserPath.moveTo(m_curX, m_curY);
         }
     }
 
@@ -53,12 +62,12 @@ public class SketchPadEraser implements ISketchPadTool {
     public void touchMove(float x, float y) {
         float dx = Math.abs(x - m_curX);
         float dy = Math.abs(y - m_curY);
-//        if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-//            m_eraserPath.quadTo(m_curX, m_curY, (x + m_curX) / 2, (y + m_curY) / 2);
-        m_eraserPath.quadTo((x + m_curX) / 2, (y + m_curY) / 2, x, y);
-        m_curX = x;
-        m_curY = y;
-//        }
+        if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
+            m_eraserPath.quadTo(m_curX, m_curY, (x + m_curX) / 2, (y + m_curY) / 2);
+//        m_eraserPath.quadTo((x + m_curX) / 2, (y + m_curY) / 2, x, y);
+            m_curX = x;
+            m_curY = y;
+        }
     }
 
     @Override
@@ -91,5 +100,12 @@ public class SketchPadEraser implements ISketchPadTool {
         }
         m_eraserPaint.setStyle(Paint.Style.STROKE);
         pCanvas.drawPath(pPath, m_eraserPaint);
+    }
+
+    @Override
+    public void drawToastCircle(Canvas pCanvas, float x, float y) {
+        if (pCanvas != null) {
+            pCanvas.drawCircle(x, y, mEraserSize / 2, mToastPaint);
+        }
     }
 }
