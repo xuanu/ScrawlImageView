@@ -103,6 +103,7 @@ public class SketchPadView extends ImageView {
                 mLine = new Line();
                 mLine.setColor(m_curTool.getColor());
                 mLine.setWidth((int) m_curTool.getSize());
+                HALF_STROKE_WIDTH = m_curTool.getSize() / 2;
                 if (mPenType == PenType.Pen) {
                     mLine.setType(0);
                 } else if (mPenType == PenType.Eraser) {
@@ -122,8 +123,9 @@ public class SketchPadView extends ImageView {
                     float historicalY = event.getHistoricalY(i);
                     savePoint(historicalX, historicalY);
                     expandDirtyRect(historicalX, historicalY);
-                    m_curTool.touchMove(eventX, eventY);
+                    m_curTool.touchMove(historicalX, historicalY);
                 }
+                m_curTool.touchMove(eventX, eventY);
                 break;
             case MotionEvent.ACTION_UP:
                 mIsTouchUp = true;
