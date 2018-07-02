@@ -2,26 +2,7 @@
 涂鸦控件，继承自ImageView
 > 同这个控件：[ScrawlView](https://github.com/xuanu/ScrawlView)   
   
-1. 在项目的要目录build.gradle中添加：    
-  
-```
-allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
-	}
-```    
-
-2. 添加依赖:  
-   
-```
-dependencies {
-	        compile 'com.github.xuanu:ScrawlImageView:1.1.6'
-	}
-```  
-
-***  
+1. 在项目的要目录build.gradle中添加：[![](https://jitpack.io/v/xuanu/ScrawlImageView.svg)](https://jitpack.io/#xuanu/ScrawlImageView)     
 
 1. **修改增加两个方法**。  
 - 设置背景图一定要使用  **setViewBackground(Bitmap);**,不然得不到图片的大小不好处理画线位置。    
