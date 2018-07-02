@@ -111,12 +111,12 @@ public class SketchPadView extends ImageView {
                 }
                 lastTouchX = eventX;
                 lastTouchY = eventY;
+                resetDirtyRect(eventX,eventY);
                 savePoint(eventX, eventY);
                 setStrokeType(mPenType);
                 m_curTool.touchDown(event.getX(), event.getY());
                 break;
             case MotionEvent.ACTION_MOVE:
-                resetDirtyRect(eventX, eventY);
                 int historySize = event.getHistorySize();
                 for (int i = 0; i < historySize; i++) {//取当前点和下一点作贝塞乐曲线
                     float historicalX = event.getHistoricalX(i);
@@ -128,6 +128,14 @@ public class SketchPadView extends ImageView {
                 m_curTool.touchMove(eventX, eventY);
                 break;
             case MotionEvent.ACTION_UP:
+                int upHistorySize = event.getHistorySize();
+                for (int i = 0; i < upHistorySize; i++) {//取当前点和下一点作贝塞乐曲线
+                    float historicalX = event.getHistoricalX(i);
+                    float historicalY = event.getHistoricalY(i);
+                    savePoint(historicalX, historicalY);
+                    expandDirtyRect(historicalX, historicalY);
+                    m_curTool.touchMove(historicalX, historicalY);
+                }
                 mIsTouchUp = true;
                 m_curTool.touchUp(event.getX(), event.getY());
                 m_curTool.draw(m_canvas);
